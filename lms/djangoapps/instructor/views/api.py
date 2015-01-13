@@ -53,6 +53,7 @@ from django_comment_common.models import (
 )
 from edxmako.shortcuts import render_to_response, render_to_string
 from courseware.models import StudentModule
+from django_sudo_helpers.decorators import sudo_required
 from shoppingcart.models import (
     Coupon,
     CourseRegistrationCode,
@@ -319,6 +320,7 @@ COUNTRY_INDEX = 3
 @ensure_csrf_cookie
 @cache_control(no_cache=True, no_store=True, must_revalidate=True)
 @require_level('staff')
+@sudo_required
 def register_and_enroll_students(request, course_id):  # pylint: disable=too-many-statements
     """
     Create new account and Enroll students in this course.
@@ -519,6 +521,7 @@ def create_and_enroll_user(email, username, name, country, password, course_id):
 @cache_control(no_cache=True, no_store=True, must_revalidate=True)
 @require_level('staff')
 @require_post_params(action="enroll or unenroll", identifiers="stringified list of emails and/or usernames")
+@sudo_required
 def students_update_enrollment(request, course_id):
     """
     Enroll or unenroll students by email.
@@ -686,6 +689,7 @@ def students_update_enrollment(request, course_id):
     identifiers="stringified list of emails and/or usernames",
     action="add or remove",
 )
+@sudo_required
 def bulk_beta_modify_access(request, course_id):
     """
     Enroll or unenroll users in beta testing program.
@@ -767,6 +771,7 @@ def bulk_beta_modify_access(request, course_id):
     rolename="'instructor', 'staff', 'beta', or 'ccx_coach'",
     action="'allow' or 'revoke'"
 )
+@sudo_required
 def modify_access(request, course_id):
     """
     Modify staff/instructor access of other user.
@@ -842,6 +847,7 @@ def modify_access(request, course_id):
 @cache_control(no_cache=True, no_store=True, must_revalidate=True)
 @require_level('instructor')
 @require_query_params(rolename="'instructor', 'staff', or 'beta'")
+@sudo_required
 def list_course_role_members(request, course_id):
     """
     List instructors and staff.
@@ -892,6 +898,7 @@ def list_course_role_members(request, course_id):
 @ensure_csrf_cookie
 @cache_control(no_cache=True, no_store=True, must_revalidate=True)
 @require_level('staff')
+@sudo_required
 def get_problem_responses(request, course_id):
     """
     Initiate generation of a CSV file containing all student answers
@@ -937,6 +944,7 @@ def get_problem_responses(request, course_id):
 @ensure_csrf_cookie
 @cache_control(no_cache=True, no_store=True, must_revalidate=True)
 @require_level('staff')
+@sudo_required
 def get_grading_config(request, course_id):
     """
     Respond with json which contains a html formatted grade summary.
@@ -957,6 +965,7 @@ def get_grading_config(request, course_id):
 @ensure_csrf_cookie
 @cache_control(no_cache=True, no_store=True, must_revalidate=True)
 @require_level('staff')
+@sudo_required
 def get_sale_records(request, course_id, csv=False):  # pylint: disable=unused-argument, redefined-outer-name
     """
     return the summary of all sales records for a particular course
@@ -988,6 +997,7 @@ def get_sale_records(request, course_id, csv=False):  # pylint: disable=unused-a
 @ensure_csrf_cookie
 @cache_control(no_cache=True, no_store=True, must_revalidate=True)
 @require_level('staff')
+@sudo_required
 def get_sale_order_records(request, course_id):  # pylint: disable=unused-argument, redefined-outer-name
     """
     return the summary of all sales records for a particular course
@@ -1029,6 +1039,7 @@ def get_sale_order_records(request, course_id):  # pylint: disable=unused-argume
 
 @require_level('staff')
 @require_POST
+@sudo_required
 def sale_validation(request, course_id):
     """
     This method either invalidate or re validate the sale against the invoice number depending upon the event type
@@ -1094,6 +1105,7 @@ def re_validate_invoice(obj_invoice):
 @ensure_csrf_cookie
 @cache_control(no_cache=True, no_store=True, must_revalidate=True)
 @require_level('staff')
+@sudo_required
 def get_issued_certificates(request, course_id):  # pylint: disable=invalid-name
     """
     Responds with JSON if CSV is not required. contains a list of issued certificates.
@@ -1133,6 +1145,7 @@ def get_issued_certificates(request, course_id):  # pylint: disable=invalid-name
 @ensure_csrf_cookie
 @cache_control(no_cache=True, no_store=True, must_revalidate=True)
 @require_level('staff')
+@sudo_required
 def get_students_features(request, course_id, csv=False):  # pylint: disable=redefined-outer-name
     """
     Respond with json which contains a summary of all enrolled students profile information.
@@ -1211,6 +1224,7 @@ def get_students_features(request, course_id, csv=False):  # pylint: disable=red
 @ensure_csrf_cookie
 @cache_control(no_cache=True, no_store=True, must_revalidate=True)
 @require_level('staff')
+@sudo_required
 def get_students_who_may_enroll(request, course_id):
     """
     Initiate generation of a CSV file containing information about
@@ -1243,6 +1257,7 @@ def get_students_who_may_enroll(request, course_id):
 @cache_control(no_cache=True, no_store=True, must_revalidate=True)
 @require_POST
 @require_level('staff')
+@sudo_required
 def add_users_to_cohorts(request, course_id):
     """
     View method that accepts an uploaded file (using key "uploaded-file")
@@ -1287,6 +1302,7 @@ def add_users_to_cohorts(request, course_id):
 @ensure_csrf_cookie
 @cache_control(no_cache=True, no_store=True, must_revalidate=True)
 @require_level('staff')
+@sudo_required
 def get_coupon_codes(request, course_id):  # pylint: disable=unused-argument
     """
     Respond with csv which contains a summary of all Active Coupons.
@@ -1316,6 +1332,7 @@ def get_coupon_codes(request, course_id):  # pylint: disable=unused-argument
 @ensure_csrf_cookie
 @cache_control(no_cache=True, no_store=True, must_revalidate=True)
 @require_level('staff')
+@sudo_required
 @require_finance_admin
 def get_enrollment_report(request, course_id):
     """
@@ -1339,6 +1356,7 @@ def get_enrollment_report(request, course_id):
 @ensure_csrf_cookie
 @cache_control(no_cache=True, no_store=True, must_revalidate=True)
 @require_level('staff')
+@sudo_required
 @require_finance_admin
 def get_exec_summary_report(request, course_id):
     """
@@ -1386,6 +1404,7 @@ def get_course_survey_results(request, course_id):
 @ensure_csrf_cookie
 @cache_control(no_cache=True, no_store=True, must_revalidate=True)
 @require_level('staff')
+@sudo_required
 def get_proctored_exam_results(request, course_id):
     """
     get the proctored exam resultsreport for the particular course.
@@ -1492,6 +1511,7 @@ def random_code_generator():
 @cache_control(no_cache=True, no_store=True, must_revalidate=True)
 @require_level('staff')
 @require_POST
+@sudo_required
 def get_registration_codes(request, course_id):  # pylint: disable=unused-argument
     """
     Respond with csv which contains a summary of all Registration Codes.
@@ -1695,6 +1715,7 @@ def generate_registration_codes(request, course_id):
 @cache_control(no_cache=True, no_store=True, must_revalidate=True)
 @require_level('staff')
 @require_POST
+@sudo_required
 def active_registration_codes(request, course_id):  # pylint: disable=unused-argument
     """
     Respond with csv which contains a summary of all Active Registration Codes.
@@ -1726,6 +1747,7 @@ def active_registration_codes(request, course_id):  # pylint: disable=unused-arg
 @cache_control(no_cache=True, no_store=True, must_revalidate=True)
 @require_level('staff')
 @require_POST
+@sudo_required
 def spent_registration_codes(request, course_id):  # pylint: disable=unused-argument
     """
     Respond with csv which contains a summary of all Spent(used) Registration Codes.
@@ -1756,6 +1778,7 @@ def spent_registration_codes(request, course_id):  # pylint: disable=unused-argu
 @ensure_csrf_cookie
 @cache_control(no_cache=True, no_store=True, must_revalidate=True)
 @require_level('staff')
+@sudo_required
 def get_anon_ids(request, course_id):  # pylint: disable=unused-argument
     """
     Respond with 2-column CSV output of user-id, anonymized-user-id
@@ -1794,6 +1817,7 @@ def get_anon_ids(request, course_id):  # pylint: disable=unused-argument
 @require_query_params(
     unique_student_identifier="email or username of student for whom to get progress url"
 )
+@sudo_required
 def get_student_progress_url(request, course_id):
     """
     Get the progress url of a student.
@@ -1823,6 +1847,7 @@ def get_student_progress_url(request, course_id):
     problem_to_reset="problem urlname to reset"
 )
 @common_exceptions_400
+@sudo_required
 def reset_student_attempts(request, course_id):
     """
 
@@ -1901,6 +1926,7 @@ def reset_student_attempts(request, course_id):
 @cache_control(no_cache=True, no_store=True, must_revalidate=True)
 @require_level('staff')
 @common_exceptions_400
+@sudo_required
 def reset_student_attempts_for_entrance_exam(request, course_id):  # pylint: disable=invalid-name
     """
 
@@ -1967,6 +1993,7 @@ def reset_student_attempts_for_entrance_exam(request, course_id):  # pylint: dis
 @require_level('instructor')
 @require_query_params(problem_to_reset="problem urlname to reset")
 @common_exceptions_400
+@sudo_required
 def rescore_problem(request, course_id):
     """
     Starts a background process a students attempts counter. Optionally deletes student state for a problem.
@@ -2021,6 +2048,7 @@ def rescore_problem(request, course_id):
 @cache_control(no_cache=True, no_store=True, must_revalidate=True)
 @require_level('instructor')
 @common_exceptions_400
+@sudo_required
 def rescore_entrance_exam(request, course_id):
     """
     Starts a background process a students attempts counter for entrance exam.
@@ -2072,6 +2100,7 @@ def rescore_entrance_exam(request, course_id):
 @ensure_csrf_cookie
 @cache_control(no_cache=True, no_store=True, must_revalidate=True)
 @require_level('staff')
+@sudo_required
 def list_background_email_tasks(request, course_id):  # pylint: disable=unused-argument
     """
     List background email tasks.
@@ -2090,6 +2119,7 @@ def list_background_email_tasks(request, course_id):  # pylint: disable=unused-a
 @ensure_csrf_cookie
 @cache_control(no_cache=True, no_store=True, must_revalidate=True)
 @require_level('staff')
+@sudo_required
 def list_email_content(request, course_id):  # pylint: disable=unused-argument
     """
     List the content of bulk emails sent
@@ -2108,6 +2138,7 @@ def list_email_content(request, course_id):  # pylint: disable=unused-argument
 @ensure_csrf_cookie
 @cache_control(no_cache=True, no_store=True, must_revalidate=True)
 @require_level('staff')
+@sudo_required
 def list_instructor_tasks(request, course_id):
     """
     List instructor tasks.
@@ -2153,6 +2184,7 @@ def list_instructor_tasks(request, course_id):
 @ensure_csrf_cookie
 @cache_control(no_cache=True, no_store=True, must_revalidate=True)
 @require_level('staff')
+@sudo_required
 def list_entrance_exam_instructor_tasks(request, course_id):  # pylint: disable=invalid-name
     """
     List entrance exam related instructor tasks.
@@ -2187,6 +2219,7 @@ def list_entrance_exam_instructor_tasks(request, course_id):  # pylint: disable=
 @ensure_csrf_cookie
 @cache_control(no_cache=True, no_store=True, must_revalidate=True)
 @require_level('staff')
+@sudo_required
 def list_report_downloads(_request, course_id):
     """
     List grade CSV files that are available for download for this course.
@@ -2206,6 +2239,7 @@ def list_report_downloads(_request, course_id):
 @ensure_csrf_cookie
 @cache_control(no_cache=True, no_store=True, must_revalidate=True)
 @require_level('staff')
+@sudo_required
 @require_finance_admin
 def list_financial_report_downloads(_request, course_id):
     """
@@ -2226,6 +2260,7 @@ def list_financial_report_downloads(_request, course_id):
 @ensure_csrf_cookie
 @cache_control(no_cache=True, no_store=True, must_revalidate=True)
 @require_level('staff')
+@sudo_required
 def calculate_grades_csv(request, course_id):
     """
     AlreadyRunningError is raised if the course's grades are already being updated.
@@ -2248,6 +2283,7 @@ def calculate_grades_csv(request, course_id):
 @ensure_csrf_cookie
 @cache_control(no_cache=True, no_store=True, must_revalidate=True)
 @require_level('staff')
+@sudo_required
 def problem_grade_report(request, course_id):
     """
     Request a CSV showing students' grades for all problems in the
@@ -2275,6 +2311,7 @@ def problem_grade_report(request, course_id):
 @cache_control(no_cache=True, no_store=True, must_revalidate=True)
 @require_level('staff')
 @require_query_params('rolename')
+@sudo_required
 def list_forum_members(request, course_id):
     """
     Lists forum members of a certain rolename.
@@ -2337,6 +2374,7 @@ def list_forum_members(request, course_id):
 @cache_control(no_cache=True, no_store=True, must_revalidate=True)
 @require_level('staff')
 @require_post_params(send_to="sending to whom", subject="subject line", message="message text")
+@sudo_required
 def send_email(request, course_id):
     """
     Send an email to self, staff, or everyone involved in a course.
@@ -2395,6 +2433,7 @@ def send_email(request, course_id):
     action="'allow' or 'revoke'",
 )
 @common_exceptions_400
+@sudo_required
 def update_forum_role_membership(request, course_id):
     """
     Modify user's forum role.
@@ -2480,6 +2519,7 @@ def _display_unit(unit):
 @cache_control(no_cache=True, no_store=True, must_revalidate=True)
 @require_level('staff')
 @require_query_params('student', 'url', 'due_datetime')
+@sudo_required
 def change_due_date(request, course_id):
     """
     Grants a due date extension to a student for a particular unit.
@@ -2501,6 +2541,7 @@ def change_due_date(request, course_id):
 @cache_control(no_cache=True, no_store=True, must_revalidate=True)
 @require_level('staff')
 @require_query_params('student', 'url')
+@sudo_required
 def reset_due_date(request, course_id):
     """
     Rescinds a due date extension for a student on a particular unit.
@@ -2527,6 +2568,7 @@ def reset_due_date(request, course_id):
 @cache_control(no_cache=True, no_store=True, must_revalidate=True)
 @require_level('staff')
 @require_query_params('url')
+@sudo_required
 def show_unit_extensions(request, course_id):
     """
     Shows all of the students which have due date extensions for the given unit.
@@ -2541,6 +2583,7 @@ def show_unit_extensions(request, course_id):
 @cache_control(no_cache=True, no_store=True, must_revalidate=True)
 @require_level('staff')
 @require_query_params('student')
+@sudo_required
 def show_student_extensions(request, course_id):
     """
     Shows all of the due date extensions granted to a particular student in a
@@ -2628,6 +2671,7 @@ def enable_certificate_generation(request, course_id=None):
 @cache_control(no_cache=True, no_store=True, must_revalidate=True)
 @require_level('staff')
 @require_POST
+@sudo_required
 def mark_student_can_skip_entrance_exam(request, course_id):  # pylint: disable=invalid-name
     """
     Mark a student to skip entrance exam.

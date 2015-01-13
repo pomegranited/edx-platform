@@ -28,6 +28,13 @@ def run():
     """
     django_utils_translation.patch()
 
+    if settings.FEATURES.get('ENABLE_DJANGO_SUDO'):
+        from lms.envs.common import apply_django_sudo_settings
+        apply_django_sudo_settings(settings)
+
+    if settings.FEATURES.get('ENABLE_THIRD_PARTY_AUTH', False):
+        enable_third_party_auth()
+
     autostartup()
 
     add_mimetypes()
@@ -37,9 +44,6 @@ def run():
 
     if settings.FEATURES.get('USE_MICROSITES', False):
         enable_microsites()
-
-    if settings.FEATURES.get('ENABLE_THIRD_PARTY_AUTH', False):
-        enable_third_party_auth()
 
     # Initialize Segment analytics module by setting the write_key.
     if settings.LMS_SEGMENT_KEY:
