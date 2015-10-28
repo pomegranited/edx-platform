@@ -9,6 +9,7 @@ from cms.urls import LIBRARY_KEY_PATTERN
 from sudo.utils import grant_sudo_privileges
 from third_party_auth.pipeline import AUTH_ENTRY_SUDO
 from util.request import COURSE_REGEX
+from .utils import emit_sudo_event
 
 
 # pylint: disable=unused-argument
@@ -43,3 +44,5 @@ def create_sudo_session(strategy, auth_entry, *args, **kwargs):
             _region = 'django_admin'
 
         grant_sudo_privileges(request, region=_region)
+
+        emit_sudo_event(request, request.user, _region, redirect_to, social_auth=True)

@@ -36,6 +36,7 @@ from lms.envs.test import (
     # This is practically unused but needed by the oauth2_provider package, which
     # some tests in common/ rely on.
     OAUTH_OIDC_ISSUER,
+    SERVICE_VARIANT,
 )
 
 # mongo connection settings
