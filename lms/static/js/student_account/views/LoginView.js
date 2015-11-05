@@ -3,9 +3,10 @@
     define([
             'jquery',
             'underscore',
+            'gettext',
             'js/student_account/views/FormView'
         ],
-        function($, _, FormView) {
+        function($, _, gettext, FormView) {
 
         return FormView.extend({
             el: '#login-form',
@@ -102,7 +103,11 @@
             },
 
             saveError: function( error ) {
-                this.errors = ['<li>' + error.responseText + '</li>'];
+                if(error.status === 500){
+                    this.errors = ['<li>' + gettext("Something went wrong.") + '</li>'];
+                } else{
+                    this.errors = ['<li>' + error.responseText + '</li>'];
+                }
                 this.setErrors();
                 this.element.hide( this.$resetSuccess );
 
