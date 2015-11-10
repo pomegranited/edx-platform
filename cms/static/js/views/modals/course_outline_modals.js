@@ -360,7 +360,7 @@ define(['jquery', 'backbone', 'underscore', 'gettext', 'js/views/baseview',
             event.preventDefault();
             this.$('#id_time_limit_div').show();
             this.$('#id_time_limit').val("00:30");
-            if ($(event.currentTarget)[0] == $('#id_proctored_exam')[0]) {
+            if ($(event.currentTarget)[0] === $('#id_proctored_exam')[0]) {
                 this.$('#id_review_rules_div').show();
             } else {
                 this.$('#id_review_rules_div').hide();
