@@ -61,5 +61,15 @@
                 <p class='field-message' id='time-limit-description'><%- gettext('Learners see warnings when 20% and 5% of the allotted time remains. You can grant learners extra time to complete the exam through the Instructor Dashboard.') %></p>
             </ul>
         </div>
+        <div class='review-rules-list-fields is-hidden' id='id_review_rules_div'>
+            <ul class="list-fields list-input exam-review-rules">
+                <li class="field field-text field-review-rules">
+                    <label for="id_review_rules" class="label"><%- gettext('Review Rules') %> </label>
+                    <textarea id="id_review_rules" cols="55" maxlength="255" name="review_rules"  aria-describedby="review-rules-description"
+                        class="review-rules input input-text" autocomplete="off" />
+                </li>
+                <p class='field-message' id='review-rules-description'><%- gettext('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam at enim non elit commodo porta non eget arcu.') %></p>
+            </ul>
+        </div>
     </div>
 </form>

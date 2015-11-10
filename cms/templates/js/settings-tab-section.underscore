@@ -1,0 +1,10 @@
+<ul class="settings-tab">
+    <li >
+        <a id="general_settings" href="#"><%- gettext('General Settings') %></a>
+    </li>
+    <li>
+        <a id="additional_settings" href="#"><%- gettext('Additional Settings') %></a>
+    </li>
+</ul>
+<div class='general_settings'></div>
+<div class='additional_settings'></div>

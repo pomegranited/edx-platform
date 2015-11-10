@@ -873,6 +873,7 @@ def create_xblock_info(xblock, data=None, metadata=None, include_ancestor_info=F
                 "is_proctored_exam": xblock.is_proctored_exam,
                 "is_practice_exam": xblock.is_practice_exam,
                 "is_time_limited": xblock.is_time_limited,
+                "ss_review_rules": xblock.ss_review_rules,
                 "default_time_limit_minutes": xblock.default_time_limit_minutes
             })
 

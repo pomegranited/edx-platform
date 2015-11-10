@@ -216,7 +216,7 @@ define(["jquery", "common/js/spec_helpers/ajax_helpers", "common/js/components/u
                     'course-outline', 'xblock-string-field-editor', 'modal-button',
                     'basic-modal', 'course-outline-modal', 'release-date-editor',
                     'due-date-editor', 'grading-editor', 'publish-editor',
-                    'staff-lock-editor', 'timed-examination-preference-editor'
+                    'staff-lock-editor', 'settings-tab-section', 'timed-examination-preference-editor'
                 ]);
                 appendSetFixtures(mockOutlinePage);
                 mockCourseJSON = createMockCourseJSON({}, [
@@ -628,6 +628,7 @@ define(["jquery", "common/js/spec_helpers/ajax_helpers", "common/js/components/u
                             due: "2014-07-10T00:00:00Z",
                             has_explicit_staff_lock: true,
                             staff_only_message: true,
+
                             "is_time_limited": true,
                             "is_practice_exam": false,
                             "is_proctored_exam": true,
@@ -715,6 +716,7 @@ define(["jquery", "common/js/spec_helpers/ajax_helpers", "common/js/components/u
                             "visible_to_staff_only": true,
                             "start":"2014-07-09T00:00:00.000Z",
                             "due":"2014-07-10T00:00:00.000Z",
+                            "ss_review_rules": "",
                             "is_time_limited": true,
                             "is_practice_exam": false,
                             "is_proctored_enabled": true,
@@ -816,6 +818,7 @@ define(["jquery", "common/js/spec_helpers/ajax_helpers", "common/js/components/u
                             }, [
                                 createMockSubsectionJSON({
                                     has_changes: true,
+
                                     "is_time_limited": false,
                                     "is_practice_exam": false,
                                     "is_proctored_exam": false,
@@ -843,6 +846,7 @@ define(["jquery", "common/js/spec_helpers/ajax_helpers", "common/js/components/u
                             }, [
                                 createMockSubsectionJSON({
                                     has_changes: true,
+
                                     "is_time_limited": true,
                                     "is_practice_exam": false,
                                     "is_proctored_exam": false,
