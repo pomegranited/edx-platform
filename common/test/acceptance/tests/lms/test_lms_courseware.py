@@ -213,6 +213,9 @@ class ProctoredExamTest(UniqueCourseTest):
         self.course_outline.visit()
         self.course_outline.open_exam_settings_dialog()
 
+        # select addtional settings tab
+        self.course_outline.select_additional_settings_tab()
+
         # When I Make the exam proctored.
         self.course_outline.make_exam_proctored()
 
@@ -236,6 +239,9 @@ class ProctoredExamTest(UniqueCourseTest):
         self._auto_auth("STAFF_TESTER", "staff101@example.com", True)
         self.course_outline.visit()
         self.course_outline.open_exam_settings_dialog()
+
+        # select addtional settings tab
+        self.course_outline.select_additional_settings_tab()
 
         # When I Make the exam timed.
         self.course_outline.make_exam_timed()
@@ -267,6 +273,9 @@ class ProctoredExamTest(UniqueCourseTest):
         self.course_outline.visit()
         self.course_outline.open_exam_settings_dialog()
 
+        # select addtional settings tab
+        self.course_outline.select_additional_settings_tab()
+
         # When I select the 'None' exams radio button
         self.course_outline.select_none_exam()
 
@@ -286,6 +295,9 @@ class ProctoredExamTest(UniqueCourseTest):
         self._auto_auth("STAFF_TESTER", "staff101@example.com", True)
         self.course_outline.visit()
         self.course_outline.open_exam_settings_dialog()
+
+        # select addtional settings tab
+        self.course_outline.select_additional_settings_tab()
 
         # When I select the timed exams radio button
         self.course_outline.select_timed_exam()
@@ -307,11 +319,72 @@ class ProctoredExamTest(UniqueCourseTest):
         self.course_outline.visit()
         self.course_outline.open_exam_settings_dialog()
 
+        # select addtional settings tab
+        self.course_outline.select_additional_settings_tab()
+
         # When I select the proctored exams radio button
         self.course_outline.select_proctored_exam()
 
         # Then the time allotted text field becomes visible
         self.assertTrue(self.course_outline.time_allotted_field_visible())
+
+    def test_ss_review_rules_field_is_visible_with_proctored_exam(self):
+        """
+        Test that the review rules textarea field is shown
+        if proctored exam radio button is selected
+        """
+
+        # Given that I am a staff member
+        # And I have visited the course outline page in studio.
+        # And the subsection edit dialog is open
+        LogoutPage(self.browser).visit()
+        self._auto_auth("STAFF_TESTER", "staff101@example.com", True)
+        self.course_outline.visit()
+        self.course_outline.open_exam_settings_dialog()
+
+        # select addtional settings tab
+        self.course_outline.select_additional_settings_tab()
+
+        # When I select the proctored exams radio button
+        self.course_outline.select_proctored_exam()
+
+        # Then the review rules textarea field becomes visible
+        self.assertTrue(self.course_outline.ss_review_rules_field_visible())
+
+    def test_ss_review_rules_field_is_not_visible_with_other_than_proctored_exam(self):
+        """
+        Test that the review rules textarea field is not
+        shown if other than proctored exam radio button is selected
+        """
+
+        # Given that I am a staff member
+        # And I have visited the course outline page in studio.
+        # And the subsection edit dialog is open
+        LogoutPage(self.browser).visit()
+        self._auto_auth("STAFF_TESTER", "staff101@example.com", True)
+        self.course_outline.visit()
+        self.course_outline.open_exam_settings_dialog()
+
+        # select addtional settings tab
+        self.course_outline.select_additional_settings_tab()
+
+        # When I select the timed exams radio button
+        self.course_outline.select_timed_exam()
+
+        # Then the review rules textarea field is not visible
+        self.assertFalse(self.course_outline.ss_review_rules_field_visible())
+
+        # When I select the none exam radio button
+        self.course_outline.select_none_exam()
+
+        # Then the review rules textarea field is not visible
+        self.assertFalse(self.course_outline.ss_review_rules_field_visible())
+
+        # When I select the practice exam radio button
+        self.course_outline.select_practice_exam()
+
+        # Then the review rules textarea field is not visible
+        self.assertFalse(self.course_outline.ss_review_rules_field_visible())
 
     def test_time_allotted_field_is_visible_with_practice_exam(self):
         """
@@ -326,6 +399,9 @@ class ProctoredExamTest(UniqueCourseTest):
         self._auto_auth("STAFF_TESTER", "staff101@example.com", True)
         self.course_outline.visit()
         self.course_outline.open_exam_settings_dialog()
+
+        # select addtional settings tab
+        self.course_outline.select_additional_settings_tab()
 
         # When I select the practice exams radio button
         self.course_outline.select_practice_exam()
