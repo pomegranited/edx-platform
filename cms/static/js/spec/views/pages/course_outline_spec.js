@@ -597,6 +597,14 @@ define(["jquery", "common/js/spec_helpers/ajax_helpers", "common/js/components/u
                     this.$("#id_not_timed").prop('checked', true).trigger('change');
                 };
 
+                selectGeneralSettings = function() {
+                   this.$(".modal-section a#general_settings").click();
+                };
+
+                selectAdditionalSettings = function() {
+                   this.$(".modal-section a#additional_settings").click();
+                };
+
                 selectTimedExam = function(time_limit) {
                     this.$("#id_timed_exam").prop('checked', true).trigger('change');
                     this.$("#id_time_limit").val(time_limit);
@@ -700,6 +708,22 @@ define(["jquery", "common/js/spec_helpers/ajax_helpers", "common/js/components/u
                     expandItemsAndVerifyState('subsection');
                     collapseItemsAndVerifyState('subsection');
                     expandItemsAndVerifyState('subsection');
+                });
+
+                 if ('can show general settings', function() {
+                    createCourseOutlinePage(this, mockCourseJSON, false);
+                    outlinePage.$('.outline-subsection .configure-button').click();
+                    selectGeneralSettings();
+                    expect($('.modal-section a#general_settings').toHaveClass('active'));
+                    expect($('.modal-section a#additional_settings').not.toHaveClass('active'));
+                });
+
+                if ('can show additional settings', function() {
+                    createCourseOutlinePage(this, mockCourseJSON, false);
+                    outlinePage.$('.outline-subsection .configure-button').click();
+                    selectAdditionalSettings();
+                    expect($('.modal-section a#general_settings').not.toHaveClass('active'));
+                    expect($('.modal-section a#additional_settings').toHaveClass('active'));
                 });
 
                 it('can be edited', function() {
