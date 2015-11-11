@@ -711,7 +711,7 @@ define(["jquery", "common/js/spec_helpers/ajax_helpers", "common/js/components/u
                     expandItemsAndVerifyState('subsection');
                 });
 
-                 it('can show general settings', function() {
+                it('can show general settings', function() {
                     createCourseOutlinePage(this, mockCourseJSON, false);
                     outlinePage.$('.outline-subsection .configure-button').click();
                     selectGeneralSettings();
