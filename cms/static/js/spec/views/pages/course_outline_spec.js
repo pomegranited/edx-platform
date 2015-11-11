@@ -580,7 +580,8 @@ define(["jquery", "common/js/spec_helpers/ajax_helpers", "common/js/components/u
 
             describe("Subsection", function() {
                 var getDisplayNameWrapper, setEditModalValues, mockServerValuesJson,
-                    selectDisableSpecialExams, selectTimedExam, selectProctoredExam, selectPracticeExam;
+                    selectDisableSpecialExams, selectGeneralSettings, selectAdditionalSettings,
+                    selectTimedExam, selectProctoredExam, selectPracticeExam;
 
                 getDisplayNameWrapper = function() {
                     return getItemHeaders('subsection').find('.wrapper-xblock-field');
@@ -710,7 +711,7 @@ define(["jquery", "common/js/spec_helpers/ajax_helpers", "common/js/components/u
                     expandItemsAndVerifyState('subsection');
                 });
 
-                 if ('can show general settings', function() {
+                 it('can show general settings', function() {
                     createCourseOutlinePage(this, mockCourseJSON, false);
                     outlinePage.$('.outline-subsection .configure-button').click();
                     selectGeneralSettings();
@@ -718,7 +719,7 @@ define(["jquery", "common/js/spec_helpers/ajax_helpers", "common/js/components/u
                     expect($('.modal-section a#additional_settings').not.toHaveClass('active'));
                 });
 
-                if ('can show additional settings', function() {
+                it('can show additional settings', function() {
                     createCourseOutlinePage(this, mockCourseJSON, false);
                     outlinePage.$('.outline-subsection .configure-button').click();
                     selectAdditionalSettings();
