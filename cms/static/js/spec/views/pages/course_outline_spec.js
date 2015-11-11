@@ -710,21 +710,21 @@ define(["jquery", "common/js/spec_helpers/ajax_helpers", "common/js/components/u
                     collapseItemsAndVerifyState('subsection');
                     expandItemsAndVerifyState('subsection');
                 });
-
+               
                 it('can show general settings', function() {
                     createCourseOutlinePage(this, mockCourseJSON, false);
                     outlinePage.$('.outline-subsection .configure-button').click();
                     selectGeneralSettings();
-                    expect($('.modal-section a#general_settings').toHaveClass('active'));
-                    expect($('.modal-section a#additional_settings').not.toHaveClass('active'));
+                    expect($('.modal-section a#general_settings')).toHaveClass('active');
+                    expect($('.modal-section a#additional_settings')).not.toHaveClass('active');
                 });
 
                 it('can show additional settings', function() {
                     createCourseOutlinePage(this, mockCourseJSON, false);
                     outlinePage.$('.outline-subsection .configure-button').click();
                     selectAdditionalSettings();
-                    expect($('.modal-section a#general_settings').not.toHaveClass('active'));
-                    expect($('.modal-section a#additional_settings').toHaveClass('active'));
+                    expect($('.modal-section a#general_settings')).not.toHaveClass('active');
+                    expect($('.modal-section a#additional_settings')).toHaveClass('active');
                 });
 
                 it('can be edited', function() {
