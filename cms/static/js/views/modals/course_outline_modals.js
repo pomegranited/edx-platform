@@ -416,7 +416,7 @@ define(['jquery', 'backbone', 'underscore', 'gettext', 'js/views/baseview',
             this.$('#id_time_limit').val(time);
         },
         setReviewRules: function (value) {
-            this.$('#id_review_rules').val(value)
+            this.$('#id_review_rules').val(value);
         },
         isValidTimeLimit: function(time_limit) {
             var pattern = new RegExp('^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$');
