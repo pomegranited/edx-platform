@@ -104,7 +104,7 @@
 
             saveError: function( error ) {
                 var msg = error.responseText;
-                if(error.status == 500){
+                if(error.status === 500){
                   msg = gettext('Something went wrong.');
                 }
                 this.errors = ['<li>' + msg + '</li>'];
