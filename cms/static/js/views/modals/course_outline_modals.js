@@ -157,17 +157,11 @@ define(['jquery', 'backbone', 'underscore', 'gettext', 'js/views/baseview',
          * @return {Object}
          */
         getRequestData: function () {
-            var parentRequestData =  CourseOutlineXBlockModal.prototype.getRequestData.call(this);
-            var special_exams_editors = this.options.special_exam_editors;
-            if (typeof special_exams_editors !== 'undefined' && special_exams_editors.length > 0) {
-                var requestData = _.map(special_exams_editors, function (editor) {
-                    return editor.getRequestData();
-                });
-
-                return $.extend.apply(this, [true, parentRequestData].concat(requestData));
-            } else {
-                return parentRequestData;
-            }
+            var combined_editors = this.options.editors.concat(this.options.special_exam_editors);
+            var requestData = _.map(combined_editors, function (editor) {
+                return editor.getRequestData();
+            });
+            return $.extend.apply(this, [true, {}].concat(requestData));
         },
 
         hideAdditionalSettings: function() {
@@ -345,9 +339,9 @@ define(['jquery', 'backbone', 'underscore', 'gettext', 'js/views/baseview',
         className: 'edit-settings-timed-examination',
         events : {
             'change #id_not_timed': 'notTimedExam',
-            'change #id_timed_exam': 'showTimeLimit',
-            'change #id_practice_exam': 'showTimeLimit',
-            'change #id_proctored_exam': 'showTimeLimit',
+            'change #id_timed_exam': function(event) {this.specialExam(event, "timed");},
+            'change #id_practice_exam': function(event) {this.specialExam(event, "practice");},
+            'change #id_proctored_exam': function(event) {this.specialExam(event, "proctored");},
             'focusout #id_time_limit': 'timeLimitFocusout'
         },
         notTimedExam: function (event) {
@@ -356,11 +350,13 @@ define(['jquery', 'backbone', 'underscore', 'gettext', 'js/views/baseview',
             this.$('#id_exam_review_rules_div').hide();
             this.$('#id_time_limit').val('00:00');
         },
-        showTimeLimit: function (event) {
+        specialExam: function (event, examType) {
             event.preventDefault();
             this.$('#id_time_limit_div').show();
-            this.$('#id_time_limit').val("00:30");
-            if ($(event.currentTarget)[0] === $('#id_proctored_exam')[0]) {
+            if (!this.isValidTimeLimit(this.$('#id_time_limit').val())) {
+                $(event.currentTarget).val("00:30");
+            }
+            if (examType === "proctored") {
                 this.$('#id_exam_review_rules_div').show();
             } else {
                 this.$('#id_exam_review_rules_div').hide();
