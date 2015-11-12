@@ -933,6 +933,34 @@ class SplitMongoModuleStore(SplitBulkWriteMixin, ModuleStoreWriteBase):
         # get the blocks for each course index (s/b the root)
         return self._get_structures_for_branch_and_locator(branch, self._create_course_locator, **kwargs)
 
+    @autoretry_read()
+    def get_courses_summary(self, branch, **kwargs):
+        """
+         Returns a list of course information which includes `display_name` and `locator` of a
+        course which matching any given qualifiers.
+
+        qualifiers should be a dict of keywords matching the db fields or any
+        legal query for mongo to use against the active_versions collection.
+
+        Note, this is to find the current head of the named branch type.
+        To get specific versions via guid use get_course.
+
+        :param branch: the branch for which to return courses.
+        """
+        result = []
+        for entry, structure_info in self._get_structures_for_branch(branch, **kwargs):
+            locator = self._create_course_locator(structure_info, branch)
+            course_block = [
+                block_data
+                for block_key, block_data in entry['blocks'].items()
+                if block_key.type == "course"
+            ]
+            if not course_block:
+                raise ItemNotFoundError
+            display_name = course_block[0].fields['display_name']
+            result.append({'display_name': display_name, 'locator': locator})
+        return result
+
     def get_libraries(self, branch="library", **kwargs):
         """
         Returns a list of "library" root blocks matching any given qualifiers.

@@ -45,7 +45,7 @@ class TestCourseIndex(CourseTestCase):
         self.odd_course = CourseFactory.create(
             org='test.org_1-2',
             number='test-2.3_course',
-            display_name='dotted.course.name-2',
+            display_name='dotted.course.name-2'
         )
 
     def check_index_and_outline(self, authed_client):
