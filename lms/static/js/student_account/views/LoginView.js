@@ -103,11 +103,11 @@
             },
 
             saveError: function( error ) {
-                if(error.status === 500){
-                    this.errors = ['<li>' + gettext("Something went wrong.") + '</li>'];
-                } else{
-                    this.errors = ['<li>' + error.responseText + '</li>'];
+                var msg = error.responseText;
+                if(error.status == 500){
+                  msg = gettext('Something went wrong.');
                 }
+                this.errors = ['<li>' + msg + '</li>'];
                 this.setErrors();
                 this.element.hide( this.$resetSuccess );
 
