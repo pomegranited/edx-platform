@@ -46,7 +46,7 @@ from south.modelsinspector import add_introspection_rules
 from track import contexts
 from xmodule_django.models import CourseKeyField, NoneToEmptyManager
 
-from certificates.models import GeneratedCertificate
+from certificates.models import GeneratedCertificate, CertificateStatuses
 from course_modes.models import CourseMode
 import lms.lib.comment_client as cc
 from openedx.core.djangoapps.commerce.utils import ecommerce_api_client, ECOMMERCE_DATE_FORMAT
@@ -1340,6 +1340,56 @@ class CourseEnrollment(models.Model):
         """
         paid_course = CourseMode.is_white_label(self.course_id)
         if paid_course or CourseMode.is_professional_slug(self.mode):
+            return True
+
+        return False
+
+    def is_active_course(self, cert_status):
+        """ Returns True if a course is active.
+
+        A course is considered active if its end date is in future.
+
+        Args:
+            cert_status (Dict): Certificate status for this enrollment
+
+        """
+        if self.course_overview.end is None:
+            return True
+
+        now = timezone.now()
+        if self.course_overview.end > now:
+            return True
+
+        if self.course_overview.end < now and cert_status.get('status') == 'processing':
+            return True
+
+        return False
+
+    def is_completed_course(self, cert_status):
+        """ Returns True if student has completed this course.
+
+        A course is considered complete if its end date is in the past.
+        And student did not earn a certificate, excluding courses in
+        'processing' state.
+
+        Args:
+            cert_status (Dict): Certificate status for this enrollment
+
+        """
+        now = timezone.now()
+        if (self.course_overview.end is not None and
+                self.course_overview.end < now and
+                self.course_overview.may_certify() and
+                cert_status.get('status') != 'processing'):
+            return True
+
+        valid_certificate_statuses = [
+            CertificateStatuses.generating,
+            CertificateStatuses.downloadable,
+            CertificateStatuses.notpassing,
+            CertificateStatuses.restricted,
+        ]
+        if self.course_overview.may_certify() and cert_status.get('status') in valid_certificate_statuses:
             return True
 
         return False

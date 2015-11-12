@@ -680,10 +680,26 @@ def dashboard(request):
     else:
         redirect_message = ''
 
+    active_course_enrollments = frozenset(
+        enrollment for enrollment in course_enrollments
+        if enrollment.is_active_course(
+            cert_info(request.user, enrollment.course_overview, enrollment.mode)
+        )
+    )
+
+    completed_course_enrollments = {
+        enrollment for enrollment in course_enrollments
+        if enrollment.is_completed_course(
+            cert_info(request.user, enrollment.course_overview, enrollment.mode)
+        )
+    }
+
     context = {
         'enrollment_message': enrollment_message,
         'redirect_message': redirect_message,
         'course_enrollments': course_enrollments,
+        'active_course_enrollments': active_course_enrollments,
+        'completed_course_enrollments': completed_course_enrollments,
         'course_optouts': course_optouts,
         'message': message,
         'staff_access': staff_access,

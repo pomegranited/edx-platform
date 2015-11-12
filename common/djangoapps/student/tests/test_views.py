@@ -26,6 +26,7 @@ class TestStudentDashboardUnenrollments(ModuleStoreTestCase):
     EMAIL = "bob@example.com"
     PASSWORD = "edx"
     UNENROLL_ELEMENT_ID = "#actions-item-unenroll-0"
+    ACTIVE_COURSES_TEMPLATE_ID = "#active-courses-tpl"
 
     def setUp(self):
         """ Create a course and user, then log in. """
@@ -61,8 +62,10 @@ class TestStudentDashboardUnenrollments(ModuleStoreTestCase):
 
         with patch('student.views.cert_info', side_effect=self.mock_cert):
             response = self.client.get(reverse('dashboard'))
+            dom = pq(response.content)
+            template = dom(self.ACTIVE_COURSES_TEMPLATE_ID).html()
 
-            self.assertEqual(pq(response.content)(self.UNENROLL_ELEMENT_ID).length, unenroll_action_count)
+            self.assertEqual(pq(template)(self.UNENROLL_ELEMENT_ID).length, unenroll_action_count)
 
     @ddt.data(
         ('notpassing', 200),
