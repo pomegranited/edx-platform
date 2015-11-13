@@ -148,8 +148,8 @@ define(['jquery', 'backbone', 'underscore', 'gettext', 'js/views/baseview',
 
         events: {
             'click .action-save': 'save',
-            'click #general_settings': 'getGeneralSettings',
-            'click #additional_settings': 'getAdditionalSettings'
+            'click #general_settings': 'showGeneralSettings',
+            'click #additional_settings': 'showAdditionalSettings'
         },
 
         /**
@@ -178,12 +178,12 @@ define(['jquery', 'backbone', 'underscore', 'gettext', 'js/views/baseview',
             this.$('.modal-section div.general_settings').hide();
             this.$('.modal-section div.additional_settings').show();
         },
-        getGeneralSettings: function (event) {
+        showGeneralSettings: function (event) {
             event.preventDefault();
             this.hideAdditionalSettings();
         },
 
-        getAdditionalSettings: function (event) {
+        showAdditionalSettings: function (event) {
             event.preventDefault();
             this.hideGeneralSettings();
         }
