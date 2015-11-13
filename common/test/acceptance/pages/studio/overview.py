@@ -583,11 +583,11 @@ class CourseOutlinePage(CoursePage, CourseOutlineContainer):
         """
         return self.q(css="#id_time_limit_div").visible
 
-    def ss_review_rules_field_visible(self):
+    def exam_review_rules_field_visible(self):
         """
         returns whether the review rules field is visible
         """
-        return self.q(css="#id_review_rules_div").visible
+        return self.q(css="#id_exam_review_rules_div").visible
 
     def proctoring_items_are_displayed(self):
         """

@@ -740,7 +740,7 @@ define(["jquery", "common/js/spec_helpers/ajax_helpers", "common/js/components/u
                             "visible_to_staff_only": true,
                             "start":"2014-07-09T00:00:00.000Z",
                             "due":"2014-07-10T00:00:00.000Z",
-                            "ss_review_rules": "",
+                            "exam_review_rules": "",
                             "is_time_limited": true,
                             "is_practice_exam": false,
                             "is_proctored_enabled": true,

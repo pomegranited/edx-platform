@@ -15,9 +15,13 @@ from edx_proctoring.api import (
     update_exam,
     create_exam,
     get_all_exams_for_course,
+    update_review_policy,
+    create_exam_review_policy,
+    remove_review_policy
 )
 from edx_proctoring.exceptions import (
-    ProctoredExamNotFoundException
+    ProctoredExamNotFoundException,
+    ProctoredExamReviewPolicyNotFoundException
 )
 
 log = logging.getLogger(__name__)
@@ -83,6 +87,16 @@ def register_special_exams(course_key):
             )
             msg = 'Updated timed exam {exam_id}'.format(exam_id=exam['id'])
             log.info(msg)
+            # check if the exam is proctored or not
+            if timed_exam.is_proctored_exam and not timed_exam.is_practice_exam:
+                update_review_policy(
+                    exam_id=exam['id'],
+                    set_by_user_id=timed_exam.edited_by,
+                    review_policy=timed_exam.exam_review_rules
+                )
+                msg = 'Updated exam review policy with {exam_id}'.format(exam_id=exam['id'])
+                log.info(msg)
+
         except ProctoredExamNotFoundException:
             exam_id = create_exam(
                 course_id=unicode(course_key),
@@ -96,6 +110,17 @@ def register_special_exams(course_key):
             )
             msg = 'Created new timed exam {exam_id}'.format(exam_id=exam_id)
             log.info(msg)
+
+        except ProctoredExamReviewPolicyNotFoundException:
+            # check if the exam is proctored or not
+            if timed_exam.is_proctored_exam and not timed_exam.is_practice_exam:
+                create_exam_review_policy(
+                    exam_id=exam['id'],
+                    set_by_user_id=timed_exam.edited_by,
+                    review_policy=timed_exam.exam_review_rules
+                )
+                msg = 'Created new exam review policy with exam_id {exam_id}'.format(exam_id=exam['id'])
+                log.info(msg)
 
     # then see which exams we have in edx-proctoring that are not in
     # our current list. That means the the user has disabled it

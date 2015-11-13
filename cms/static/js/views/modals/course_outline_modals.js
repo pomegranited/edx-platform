@@ -353,7 +353,7 @@ define(['jquery', 'backbone', 'underscore', 'gettext', 'js/views/baseview',
         notTimedExam: function (event) {
             event.preventDefault();
             this.$('#id_time_limit_div').hide();
-            this.$('#id_review_rules_div').hide();
+            this.$('#id_exam_review_rules_div').hide();
             this.$('#id_time_limit').val('00:00');
         },
         showTimeLimit: function (event) {
@@ -361,9 +361,9 @@ define(['jquery', 'backbone', 'underscore', 'gettext', 'js/views/baseview',
             this.$('#id_time_limit_div').show();
             this.$('#id_time_limit').val("00:30");
             if ($(event.currentTarget)[0] === $('#id_proctored_exam')[0]) {
-                this.$('#id_review_rules_div').show();
+                this.$('#id_exam_review_rules_div').show();
             } else {
-                this.$('#id_review_rules_div').hide();
+                this.$('#id_exam_review_rules_div').hide();
             }
         },
         timeLimitFocusout: function(event) {
@@ -386,7 +386,7 @@ define(['jquery', 'backbone', 'underscore', 'gettext', 'js/views/baseview',
                             this.model.get('is_practice_exam'));
             this.setExamTime(this.model.get('default_time_limit_minutes'));
 
-            this.setReviewRules(this.model.get('ss_review_rules'));
+            this.setReviewRules(this.model.get('exam_review_rules'));
         },
         setExamType: function(is_time_limited, is_proctored_exam, is_practice_exam) {
             if (!is_time_limited) {
@@ -395,14 +395,14 @@ define(['jquery', 'backbone', 'underscore', 'gettext', 'js/views/baseview',
             }
 
             this.$('#id_time_limit_div').show();
-            this.$('#id_review_rules_div').hide();
+            this.$('#id_exam_review_rules_div').hide();
 
             if (this.options.enable_proctored_exams && is_proctored_exam) {
                 if (is_practice_exam) {
                     this.$('#id_practice_exam').prop('checked', true);
                 } else {
                     this.$('#id_proctored_exam').prop('checked', true);
-                    this.$('#id_review_rules_div').show();
+                    this.$('#id_exam_review_rules_div').show();
                 }
             } else {
                 // Since we have an early exit at the top of the method
@@ -416,7 +416,7 @@ define(['jquery', 'backbone', 'underscore', 'gettext', 'js/views/baseview',
             this.$('#id_time_limit').val(time);
         },
         setReviewRules: function (value) {
-            this.$('#id_review_rules').val(value);
+            this.$('#id_exam_review_rules').val(value);
         },
         isValidTimeLimit: function(time_limit) {
             var pattern = new RegExp('^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$');
@@ -442,7 +442,7 @@ define(['jquery', 'backbone', 'underscore', 'gettext', 'js/views/baseview',
             var is_practice_exam;
             var is_proctored_exam;
             var time_limit = this.getExamTimeLimit();
-            var ss_review_rules = this.$('#id_review_rules').val();
+            var exam_review_rules = this.$('#id_exam_review_rules').val();
 
             if (this.$("#id_not_timed").is(':checked')){
                 is_time_limited = false;
@@ -466,7 +466,7 @@ define(['jquery', 'backbone', 'underscore', 'gettext', 'js/views/baseview',
                 metadata: {
                     'is_practice_exam': is_practice_exam,
                     'is_time_limited': is_time_limited,
-                    'ss_review_rules': ss_review_rules,
+                    'exam_review_rules': exam_review_rules,
                     // We have to use the legacy field name
                     // as the Ajax handler directly populates
                     // the xBlocks fields. We will have to

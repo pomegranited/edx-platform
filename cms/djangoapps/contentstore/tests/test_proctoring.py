@@ -11,7 +11,10 @@ from xmodule.modulestore.tests.factories import CourseFactory, ItemFactory
 
 from contentstore.signals import listen_for_course_publish
 
-from edx_proctoring.api import get_all_exams_for_course
+from edx_proctoring.api import (
+    get_all_exams_for_course,
+    get_review_policy_by_exam_id
+)
 
 
 @ddt.ddt
@@ -44,6 +47,12 @@ class TestProctoredExams(ModuleStoreTestCase):
         self.assertEqual(len(exams), 1)
 
         exam = exams[0]
+
+        if exam['is_proctored']:
+            # get the review policy object
+            exam_review_policy = get_review_policy_by_exam_id(exam['id'])
+            self.assertEqual(exam_review_policy['review_policy'], sequence.exam_review_rules)
+
         self.assertEqual(exam['course_id'], unicode(self.course.id))
         self.assertEqual(exam['content_id'], unicode(sequence.location))
         self.assertEqual(exam['exam_name'], sequence.display_name)
@@ -73,7 +82,8 @@ class TestProctoredExams(ModuleStoreTestCase):
             is_time_limited=is_time_limited,
             default_time_limit_minutes=default_time_limit_minutes,
             is_proctored_exam=is_proctored_exam,
-            due=datetime.now(UTC) + timedelta(minutes=default_time_limit_minutes + 1)
+            due=datetime.now(UTC) + timedelta(minutes=default_time_limit_minutes + 1),
+            exam_review_rules="allow_use_of_paper"
         )
 
         listen_for_course_publish(self, self.course.id)
@@ -105,7 +115,8 @@ class TestProctoredExams(ModuleStoreTestCase):
             graded=True,
             is_time_limited=True,
             default_time_limit_minutes=10,
-            is_proctored_exam=True
+            is_proctored_exam=True,
+            exam_review_rules="allow_use_of_paper"
         )
 
         listen_for_course_publish(self, self.course.id)
@@ -135,7 +146,8 @@ class TestProctoredExams(ModuleStoreTestCase):
             graded=True,
             is_time_limited=True,
             default_time_limit_minutes=10,
-            is_proctored_exam=True
+            is_proctored_exam=True,
+            exam_review_rules="allow_use_of_paper"
         )
 
         listen_for_course_publish(self, self.course.id)
@@ -170,7 +182,8 @@ class TestProctoredExams(ModuleStoreTestCase):
             graded=True,
             is_time_limited=True,
             default_time_limit_minutes=10,
-            is_proctored_exam=True
+            is_proctored_exam=True,
+            exam_review_rules="allow_use_of_paper"
         )
 
         listen_for_course_publish(self, self.course.id)
@@ -205,7 +218,8 @@ class TestProctoredExams(ModuleStoreTestCase):
             graded=True,
             is_time_limited=True,
             default_time_limit_minutes=10,
-            is_proctored_exam=True
+            is_proctored_exam=True,
+            exam_review_rules="allow_use_of_paper"
         )
 
         listen_for_course_publish(self, self.course.id)

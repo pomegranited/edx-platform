@@ -328,7 +328,7 @@ class ProctoredExamTest(UniqueCourseTest):
         # Then the time allotted text field becomes visible
         self.assertTrue(self.course_outline.time_allotted_field_visible())
 
-    def test_ss_review_rules_field_is_visible_with_proctored_exam(self):
+    def test_exam_review_rules_field_is_visible_with_proctored_exam(self):
         """
         Test that the review rules textarea field is shown
         if proctored exam radio button is selected
@@ -349,9 +349,9 @@ class ProctoredExamTest(UniqueCourseTest):
         self.course_outline.select_proctored_exam()
 
         # Then the review rules textarea field becomes visible
-        self.assertTrue(self.course_outline.ss_review_rules_field_visible())
+        self.assertTrue(self.course_outline.exam_review_rules_field_visible())
 
-    def test_ss_review_rules_field_is_not_visible_with_other_than_proctored_exam(self):
+    def test_exam_review_rules_field_is_not_visible_with_other_than_proctored_exam(self):
         """
         Test that the review rules textarea field is not
         shown if other than proctored exam radio button is selected
@@ -372,19 +372,19 @@ class ProctoredExamTest(UniqueCourseTest):
         self.course_outline.select_timed_exam()
 
         # Then the review rules textarea field is not visible
-        self.assertFalse(self.course_outline.ss_review_rules_field_visible())
+        self.assertFalse(self.course_outline.exam_review_rules_field_visible())
 
         # When I select the none exam radio button
         self.course_outline.select_none_exam()
 
         # Then the review rules textarea field is not visible
-        self.assertFalse(self.course_outline.ss_review_rules_field_visible())
+        self.assertFalse(self.course_outline.exam_review_rules_field_visible())
 
         # When I select the practice exam radio button
         self.course_outline.select_practice_exam()
 
         # Then the review rules textarea field is not visible
-        self.assertFalse(self.course_outline.ss_review_rules_field_visible())
+        self.assertFalse(self.course_outline.exam_review_rules_field_visible())
 
     def test_time_allotted_field_is_visible_with_practice_exam(self):
         """

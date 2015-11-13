@@ -88,7 +88,7 @@ class ProctoringFields(object):
         scope=Scope.settings,
     )
 
-    ss_review_rules = String(
+    exam_review_rules = String(
         display_name=_("Software Secure Review Rules"),
         help=_(
             "This setting indicates what rules the proctoring team should follow when viewing the videos."
