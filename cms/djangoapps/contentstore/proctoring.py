@@ -16,8 +16,7 @@ from edx_proctoring.api import (
     create_exam,
     get_all_exams_for_course,
     update_review_policy,
-    create_exam_review_policy,
-    remove_review_policy
+    create_exam_review_policy
 )
 from edx_proctoring.exceptions import (
     ProctoredExamNotFoundException,
