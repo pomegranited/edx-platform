@@ -535,7 +535,7 @@ class CourseOutlinePage(CoursePage, CourseOutlineContainer):
         Select the additional settings tab
         """
         self.q(css="#additional_settings").first.click()
-        self.wait_for_ajax()
+        self.wait_for_element_presence('#id_not_timed', 'None radio button presence')
 
     def make_exam_proctored(self):
         """
