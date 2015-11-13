@@ -68,7 +68,7 @@
                     <textarea id="id_exam_review_rules" cols="50" maxlength="255" name="review_rules"  aria-describedby="review-rules-description"
                         class="review-rules input input-text" autocomplete="off" />
                 </li>
-                <p class='field-message' id='review-rules-description'><%- gettext('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam at enim non elit commodo porta non eget arcu.') %></p>
+                <p class='field-message' id='review-rules-description'><%- gettext('Specify what rules the proctoring review team should follow when viewing the videos. (e.g. allow calculators, etc.)') %></p>
             </ul>
         </div>
     </div>

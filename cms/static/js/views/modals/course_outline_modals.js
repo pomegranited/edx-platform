@@ -339,9 +339,9 @@ define(['jquery', 'backbone', 'underscore', 'gettext', 'js/views/baseview',
         className: 'edit-settings-timed-examination',
         events : {
             'change #id_not_timed': 'notTimedExam',
-            'change #id_timed_exam': function(event) {this.specialExam(event, "timed");},
-            'change #id_practice_exam': function(event) {this.specialExam(event, "practice");},
-            'change #id_proctored_exam': function(event) {this.specialExam(event, "proctored");},
+            'change #id_timed_exam': 'timedExam',
+            'change #id_practice_exam': 'practiceExam',
+            'change #id_proctored_exam': 'proctoredExam',
             'focusout #id_time_limit': 'timeLimitFocusout'
         },
         notTimedExam: function (event) {
@@ -350,17 +350,27 @@ define(['jquery', 'backbone', 'underscore', 'gettext', 'js/views/baseview',
             this.$('#id_exam_review_rules_div').hide();
             this.$('#id_time_limit').val('00:00');
         },
-        specialExam: function (event, examType) {
+        selectSpecialExam: function (event, showRulesField) {
             event.preventDefault();
             this.$('#id_time_limit_div').show();
             if (!this.isValidTimeLimit(this.$('#id_time_limit').val())) {
                 $(event.currentTarget).val("00:30");
             }
-            if (examType === "proctored") {
+            if (showRulesField) {
                 this.$('#id_exam_review_rules_div').show();
-            } else {
+            }
+            else {
                 this.$('#id_exam_review_rules_div').hide();
             }
+        },
+        timedExam: function (event) {
+            this.selectSpecialExam(event, false);
+        },
+        practiceExam: function (event) {
+            this.selectSpecialExam(event, false);
+        },
+        proctoredExam: function (event) {
+            this.selectSpecialExam(event, true);
         },
         timeLimitFocusout: function(event) {
             event.preventDefault();
