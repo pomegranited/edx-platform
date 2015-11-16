@@ -75,7 +75,7 @@ def register_special_exams(course_key):
         try:
             exam = get_exam_by_content_id(unicode(course_key), unicode(timed_exam.location))
             # update case, make sure everything is synced
-            update_exam(
+            exam_id = update_exam(
                 exam_id=exam['id'],
                 exam_name=timed_exam.display_name,
                 time_limit_mins=timed_exam.default_time_limit_minutes,
@@ -86,15 +86,6 @@ def register_special_exams(course_key):
             )
             msg = 'Updated timed exam {exam_id}'.format(exam_id=exam['id'])
             log.info(msg)
-            # check if the exam is proctored or not
-            if timed_exam.is_proctored_exam and not timed_exam.is_practice_exam:
-                update_review_policy(
-                    exam_id=exam['id'],
-                    set_by_user_id=timed_exam.edited_by,
-                    review_policy=timed_exam.exam_review_rules
-                )
-                msg = 'Updated exam review policy with {exam_id}'.format(exam_id=exam['id'])
-                log.info(msg)
 
         except ProctoredExamNotFoundException:
             exam_id = create_exam(
@@ -110,15 +101,23 @@ def register_special_exams(course_key):
             msg = 'Created new timed exam {exam_id}'.format(exam_id=exam_id)
             log.info(msg)
 
-        except ProctoredExamReviewPolicyNotFoundException:
-            # check if the exam is proctored or not
-            if timed_exam.is_proctored_exam and not timed_exam.is_practice_exam:
-                create_exam_review_policy(
-                    exam_id=exam['id'],
+        # only create/update exam policy for the proctored exams
+        if timed_exam.is_proctored_exam and not timed_exam.is_practice_exam:
+            try:
+                update_review_policy(
+                    exam_id=exam_id,
                     set_by_user_id=timed_exam.edited_by,
                     review_policy=timed_exam.exam_review_rules
                 )
-                msg = 'Created new exam review policy with exam_id {exam_id}'.format(exam_id=exam['id'])
+                msg = 'Updated exam review policy with {exam_id}'.format(exam_id=exam_id)
+                log.info(msg)
+            except ProctoredExamReviewPolicyNotFoundException:
+                create_exam_review_policy(
+                    exam_id=exam_id,
+                    set_by_user_id=timed_exam.edited_by,
+                    review_policy=timed_exam.exam_review_rules
+                )
+                msg = 'Created new exam review policy with exam_id {exam_id}'.format(exam_id=exam_id)
                 log.info(msg)
 
     # then see which exams we have in edx-proctoring that are not in
