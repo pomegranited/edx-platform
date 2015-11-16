@@ -2718,7 +2718,9 @@ PROCTORING_SETTINGS = {}
 # to compete with the MOOC.
 CCX_MAX_STUDENTS_ALLOWED = 200
 
+
 ########## django-sudo ##########
+
 def apply_django_sudo_settings(django_settings):
     """Set provider-independent settings."""
     # force re-authentication before activating administrative functions

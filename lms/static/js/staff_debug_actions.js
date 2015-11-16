@@ -6,16 +6,6 @@ var StaffDebug = (function (){
     return window.location.pathname;
   };
 
-  var get_url = function(action){
-    var problem_to_reset = encodeURIComponent(action.location);
-    var unique_student_identifier = get_user(action.locationName);
-    var pathname = get_current_url();
-    var url = pathname.substr(0,pathname.indexOf('/courseware')) +
-        '/instructor'+ '?unique_student_identifier=' + unique_student_identifier +
-        '&problem_to_reset=' + problem_to_reset;
-    return url;
-  };
-
   var sanitized_string = function(string) {
     return string.replace(/[.*+?^:${}()|[\]\\]/g, "\\$&");
   };
@@ -27,6 +17,16 @@ var StaffDebug = (function (){
         uname =  $('#sd_fu_' + locname).attr('placeholder');
     }
     return uname;
+  };
+
+  var get_url = function(action){
+    var problem_to_reset = encodeURIComponent(action.location);
+    var unique_student_identifier = get_user(action.locationName);
+    var pathname = get_current_url();
+    var url = pathname.substr(0,pathname.indexOf('/courseware')) +
+        '/instructor'+ '?unique_student_identifier=' + unique_student_identifier +
+        '&problem_to_reset=' + problem_to_reset;
+    return url;
   };
 
   var goto_student_admin = function(location) {

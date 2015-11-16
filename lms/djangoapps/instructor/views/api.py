@@ -1381,6 +1381,7 @@ def get_exec_summary_report(request, course_id):
 @ensure_csrf_cookie
 @cache_control(no_cache=True, no_store=True, must_revalidate=True)
 @require_level('staff')
+@sudo_required
 def get_course_survey_results(request, course_id):
     """
     get the survey results report for the particular course.
@@ -2634,6 +2635,7 @@ def _instructor_dash_url(course_key, section=None):
 
 @require_global_staff
 @require_POST
+@sudo_required
 def generate_example_certificates(request, course_id=None):  # pylint: disable=unused-argument
     """Start generating a set of example certificates.
 
@@ -2651,6 +2653,7 @@ def generate_example_certificates(request, course_id=None):  # pylint: disable=u
 
 @require_global_staff
 @require_POST
+@sudo_required
 def enable_certificate_generation(request, course_id=None):
     """Enable/disable self-generated certificates for a course.
 
@@ -2696,6 +2699,7 @@ def mark_student_can_skip_entrance_exam(request, course_id):  # pylint: disable=
 @cache_control(no_cache=True, no_store=True, must_revalidate=True)
 @require_global_staff
 @require_POST
+@sudo_required
 def start_certificate_generation(request, course_id):
     """
     Start generating certificates for all students enrolled in given course.
@@ -2715,6 +2719,7 @@ def start_certificate_generation(request, course_id):
 @cache_control(no_cache=True, no_store=True, must_revalidate=True)
 @require_global_staff
 @require_POST
+@sudo_required
 def start_certificate_regeneration(request, course_id):
     """
     Start regenerating certificates for students whose certificate statuses lie with in 'certificate_statuses'
@@ -2752,6 +2757,7 @@ def start_certificate_regeneration(request, course_id):
 @cache_control(no_cache=True, no_store=True, must_revalidate=True)
 @require_global_staff
 @require_POST
+@sudo_required
 def create_certificate_exception(request, course_id, white_list_student=None):
     """
     Add Students to certificate white list.

@@ -232,6 +232,7 @@ class CertificatesInstructorApiTest(SharedModuleStoreTestCase):
 
         # Instructors do not have access
         self.client.login(username=self.instructor.username, password='test')
+        self.grant_sudo_access(unicode(self.course.id), 'test')
         response = self.client.post(url)
         self.assertEqual(response.status_code, 403)
 
@@ -311,6 +312,7 @@ class CertificatesInstructorApiTest(SharedModuleStoreTestCase):
         valid course key
         """
         self.client.login(username=self.global_staff.username, password='test')
+        self.grant_sudo_access(unicode(self.course.id), 'test')
         url = reverse(
             'start_certificate_generation',
             kwargs={'course_id': unicode(self.course.id)}
@@ -328,6 +330,7 @@ class CertificatesInstructorApiTest(SharedModuleStoreTestCase):
         when called with valid course key and certificate exception data
         """
         self.client.login(username=self.global_staff.username, password='test')
+        self.grant_sudo_access(unicode(self.course.id), 'test')
         url = reverse(
             'create_certificate_exception',
             kwargs={'course_id': unicode(self.course.id), 'white_list_student': ''}
@@ -364,6 +367,7 @@ class CertificatesInstructorApiTest(SharedModuleStoreTestCase):
         self.certificate_exception_data[0].update({'user_name': invalid_user})
 
         self.client.login(username=self.global_staff.username, password='test')
+        self.grant_sudo_access(unicode(self.course.id), 'test')
         url = reverse(
             'create_certificate_exception',
             kwargs={'course_id': unicode(self.course.id), 'white_list_student': ''}
@@ -395,6 +399,7 @@ class CertificatesInstructorApiTest(SharedModuleStoreTestCase):
         self.certificate_exception_data[0].update({'user_name': '', 'user_email': ''})
 
         self.client.login(username=self.global_staff.username, password='test')
+        self.grant_sudo_access(unicode(self.course.id), 'test')
         url = reverse(
             'create_certificate_exception',
             kwargs={'course_id': unicode(self.course.id), 'white_list_student': ''}
@@ -425,6 +430,7 @@ class CertificatesInstructorApiTest(SharedModuleStoreTestCase):
         """
 
         self.client.login(username=self.global_staff.username, password='test')
+        self.grant_sudo_access(unicode(self.course.id), 'test')
         url = reverse(
             'create_certificate_exception',
             kwargs={'course_id': unicode(self.course.id), 'white_list_student': ''}
@@ -464,7 +470,7 @@ class CertificatesInstructorApiTest(SharedModuleStoreTestCase):
         """
 
         self.client.login(username=self.global_staff.username, password='test')
-
+        self.grant_sudo_access(unicode(self.course.id), 'test')
         url_course1 = reverse(
             'create_certificate_exception',
             kwargs={'course_id': unicode(self.course.id), 'white_list_student': ''}
@@ -512,6 +518,7 @@ class CertificatesInstructorApiTest(SharedModuleStoreTestCase):
 
         # Login the client and access the url with 'certificate_statuses'
         self.client.login(username=self.global_staff.username, password='test')
+        self.grant_sudo_access(unicode(self.course.id), 'test')
         url = reverse('start_certificate_regeneration', kwargs={'course_id': unicode(self.course.id)})
         response = self.client.post(url, data={'certificate_statuses': [CertificateStatuses.downloadable]})
 
@@ -547,6 +554,7 @@ class CertificatesInstructorApiTest(SharedModuleStoreTestCase):
 
         # Login the client and access the url without 'certificate_statuses'
         self.client.login(username=self.global_staff.username, password='test')
+        self.grant_sudo_access(unicode(self.course.id), 'test')
         url = reverse('start_certificate_regeneration', kwargs={'course_id': unicode(self.course.id)})
         response = self.client.post(url)
 
