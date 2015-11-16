@@ -350,8 +350,7 @@ define(['jquery', 'backbone', 'underscore', 'gettext', 'js/views/baseview',
             this.$('#id_exam_review_rules_div').hide();
             this.$('#id_time_limit').val('00:00');
         },
-        selectSpecialExam: function (event, showRulesField) {
-            event.preventDefault();
+        selectSpecialExam: function (showRulesField) {
             this.$('#id_time_limit_div').show();
             if (!this.isValidTimeLimit(this.$('#id_time_limit').val())) {
                 this.$('#id_time_limit').val('00:30');
@@ -364,13 +363,16 @@ define(['jquery', 'backbone', 'underscore', 'gettext', 'js/views/baseview',
             }
         },
         timedExam: function (event) {
-            this.selectSpecialExam(event, false);
+            event.preventDefault();
+            this.selectSpecialExam(false);
         },
         practiceExam: function (event) {
-            this.selectSpecialExam(event, false);
+            event.preventDefault();
+            this.selectSpecialExam(false);
         },
         proctoredExam: function (event) {
-            this.selectSpecialExam(event, true);
+            event.preventDefault();
+            this.selectSpecialExam(true);
         },
         timeLimitFocusout: function(event) {
             event.preventDefault();
