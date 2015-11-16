@@ -16,7 +16,8 @@ from edx_proctoring.api import (
     create_exam,
     get_all_exams_for_course,
     update_review_policy,
-    create_exam_review_policy
+    create_exam_review_policy,
+    remove_review_policy,
 )
 from edx_proctoring.exceptions import (
     ProctoredExamNotFoundException,
@@ -109,16 +110,21 @@ def register_special_exams(course_key):
                     set_by_user_id=timed_exam.edited_by,
                     review_policy=timed_exam.exam_review_rules
                 )
-                msg = 'Updated exam review policy with {exam_id}'.format(exam_id=exam_id)
-                log.info(msg)
             except ProctoredExamReviewPolicyNotFoundException:
-                create_exam_review_policy(
-                    exam_id=exam_id,
-                    set_by_user_id=timed_exam.edited_by,
-                    review_policy=timed_exam.exam_review_rules
-                )
-                msg = 'Created new exam review policy with exam_id {exam_id}'.format(exam_id=exam_id)
-                log.info(msg)
+                if timed_exam.exam_review_rules:  # won't save an empty rule.
+                    create_exam_review_policy(
+                        exam_id=exam_id,
+                        set_by_user_id=timed_exam.edited_by,
+                        review_policy=timed_exam.exam_review_rules
+                    )
+                    msg = 'Created new exam review policy with exam_id {exam_id}'.format(exam_id=exam_id)
+                    log.info(msg)
+        else:
+            try:
+                # remove any associated review policy
+                remove_review_policy(exam_id=exam_id)
+            except ProctoredExamReviewPolicyNotFoundException:
+                pass
 
     # then see which exams we have in edx-proctoring that are not in
     # our current list. That means the the user has disabled it
