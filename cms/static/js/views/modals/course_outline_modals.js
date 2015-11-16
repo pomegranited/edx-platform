@@ -354,7 +354,7 @@ define(['jquery', 'backbone', 'underscore', 'gettext', 'js/views/baseview',
             event.preventDefault();
             this.$('#id_time_limit_div').show();
             if (!this.isValidTimeLimit(this.$('#id_time_limit').val())) {
-                $(event.currentTarget).val("00:30");
+                this.$('#id_time_limit').val('00:30');
             }
             if (showRulesField) {
                 this.$('#id_exam_review_rules_div').show();
