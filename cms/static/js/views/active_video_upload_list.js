@@ -2,6 +2,7 @@ define(
     ["jquery", "underscore", "backbone", "js/models/active_video_upload", "js/views/baseview", "js/views/active_video_upload", "jquery.fileupload"],
     function($, _, Backbone, ActiveVideoUpload, BaseView, ActiveVideoUploadView) {
         "use strict";
+        var pageUnloadMessage = gettext("You are uploading one or more videos. Do you really want to leave this page?");
 
         var ActiveVideoUploadListView = BaseView.extend({
             tagName: "div",
@@ -10,6 +11,7 @@ define(
                 "dragleave .file-drop-area": "dragleave",
                 "drop .file-drop-area": "dragleave"
             },
+            pageUnloadMessage: pageUnloadMessage,
 
             initialize: function(options) {
                 this.template = this.loadTemplate("active-video-upload-list");
@@ -41,6 +43,7 @@ define(
                     fail: this.fileUploadFail.bind(this)
                 });
 
+
                 // Disable default drag and drop behavior for the window (which
                 // is to load the file in place)
                 var preventDefault = function(event) {
@@ -48,8 +51,23 @@ define(
                 };
                 $(window).on("dragover", preventDefault);
                 $(window).on("drop", preventDefault);
+                $(window).on("beforeunload", this.onBeforeUnload.bind(this));
 
                 return this;
+            },
+
+            onBeforeUnload: function () {
+                // Are there are uploads queued or in progress?
+                var uploading = this.collection.filter(function(model) {
+                    var stat = model.get("status");
+                    return (model.get("progress") < 1)
+                        && ((stat == ActiveVideoUpload.STATUS_QUEUED
+                         || (stat == ActiveVideoUpload.STATUS_UPLOADING)));
+                });
+                // If so, show a warning message.
+                if (uploading.length) {
+                    return pageUnloadMessage;
+                }
             },
 
             addUpload: function(model) {
