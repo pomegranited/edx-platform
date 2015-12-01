@@ -2,7 +2,7 @@ define(
     ["jquery", "underscore", "backbone", "js/models/active_video_upload", "js/views/baseview", "js/views/active_video_upload", "jquery.fileupload"],
     function($, _, Backbone, ActiveVideoUpload, BaseView, ActiveVideoUploadView) {
         "use strict";
-        var pageUnloadMessage = gettext("You are uploading one or more videos. Do you really want to leave this page?");
+        var pageUnloadMessage = gettext("Your video uploads are not complete.");
 
         var ActiveVideoUploadListView = BaseView.extend({
             tagName: "div",
